@@ -27,6 +27,7 @@
     "@particle-network/provider": "^1.2.0",
     "@particle-network/thresh-sig": "^0.7.8",
     "@types/events": "^3.0.3",
+    "@types/react-dom": "^18.2.18",
     "antd": "^5.11.5",
     "buffer": "^6.0.3",
     "ethers": "5.7.2",

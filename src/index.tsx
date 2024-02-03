@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { AuthType } from '@particle-network/auth-core';
-import { Scroll } from '@particle-network/chains';
 import { AuthCoreContextProvider } from '@particle-network/auth-core-modal';
+import { ScrollSepolia } from '@particle-network/chains/dist';
 
 import App from './App';
 
@@ -15,9 +15,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthCoreContextProvider
       options={{
-        projectId: process.env.REACT_APP_PROJECT_ID,
-        clientKey: process.env.REACT_APP_CLIENT_KEY,
-        appId: process.env.REACT_APP_APP_ID,
+        projectId: import.meta.env.VITE_APP_PROJECT_ID!,
+        clientKey: import.meta.env.VITE_APP_CLIENT_KEY!,
+        appId: import.meta.env.VITE_APP_APP_ID!,
         authTypes: [AuthType.email, AuthType.google, AuthType.twitter],
         themeType: 'dark',
         fiatCoin: 'USD',
@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         wallet: {
           visible: true,
           customStyle: {
-            supportChains: [Scroll]
+            supportChains: [ScrollSepolia]
           }
         },
       }}

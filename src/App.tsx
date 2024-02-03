@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useEthereum, useConnect, useAuthCore } from '@particle-network/auth-core-modal';
-import { Scroll } from '@particle-network/chains';
-import { AAWrapProvider, SmartAccount, SendTransactionMode } from '@particle-network/aa';
+import { AAWrapProvider, SendTransactionMode, SmartAccount } from '@particle-network/aa';
+import { useAuthCore, useConnect, useEthereum } from '@particle-network/auth-core-modal';
+import { ScrollSepolia } from '@particle-network/chains/dist';
 
-import { ethers } from 'ethers';
 import { notification } from 'antd';
+import { ethers } from 'ethers';
 
 import './App.css';
 
@@ -14,14 +14,15 @@ const App = () => {
   const { connect, disconnect } = useConnect();
   const { userInfo } = useAuthCore();
 
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState<string>("");
+  const [smartAccountAddress, setSmartAccountAddress] = useState<string>("");
 
   const smartAccount = new SmartAccount(provider, {
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    clientKey: process.env.REACT_APP_CLIENT_KEY,
-    appId: process.env.REACT_APP_APP_ID,
+    projectId: import.meta.env.VITE_APP_PROJECT_ID!,
+    clientKey: import.meta.env.VITE_APP_CLIENT_KEY!,
+    appId: import.meta.env.VITE_APP_APP_ID!,
     aaOptions: {
-      simple: [{ chainId: Scroll.id, version: '1.0.0' }]
+      simple: [{ chainId: ScrollSepolia.id, version: '1.0.0' }]
     }
   });
 
@@ -37,13 +38,14 @@ const App = () => {
     const balanceResponse = await customProvider.getBalance(await smartAccount.getAddress());
 
     setBalance(ethers.utils.formatEther(balanceResponse));
+    setSmartAccountAddress(await smartAccount.getAddress())
   }
 
-  const handleLogin = async (authType) => {
+  const handleLogin = async (authType: any) => {
     if (!userInfo) {
       await connect({
         socialType: authType,
-        chain: Scroll,
+        chain: ScrollSepolia,
       });
     }
   };
@@ -74,6 +76,7 @@ const App = () => {
       ) : (
         <div className="profile-card">
           <h2>{userInfo.name}</h2>
+          <h3>Your Address: {smartAccountAddress}</h3>
           <div className="balance-section">
             <small>{balance} ETH</small>
             <button className="sign-message-button" onClick={executeUserOp}>Execute User Operation</button>
